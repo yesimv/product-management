@@ -3,10 +3,9 @@ const router = express.Router();
 const db = require('../config/db');
 // Crear producto
 router.post('/', (req, res) => {
- const { name, price, category, stock } = req.body;
- const query = 'INSERT INTO products (name, price, category,
-stock) VALUES (?, ?, ?, ?)';
- db.query(query, [name, price, category, stock], (err, result) =>
+ const { name, category, stock, price } = req.body;
+ const query = 'INSERT INTO products (name, category, stock, price) VALUES (?, ?, ?, ?)';
+ db.query(query, [name, category, stock, price], (err, result) =>
 {
     if (err) return res.status(500).send(err);
  res.status(201).send({ message: 'Producto creado',
@@ -23,10 +22,9 @@ router.get('/', (req, res) => {
 // Actualizar producto
 router.put('/:id', (req, res) => {
  const { id } = req.params;
- const { name, price, category, stock } = req.body;
- const query = 'UPDATE products SET name = ?, price = ?,
-category = ?, stock = ? WHERE id = ?';
- db.query(query, [name, price, category, stock, id], (err) => {
+ const { name, category, stock, price } = req.body;
+ const query = 'UPDATE products SET name = ?, category = ?, stock = ?, price = ? WHERE id = ?';
+ db.query(query, [name, category, stock, price, id], (err) => {
  if (err) return res.status(500).send(err);
  res.send({ message: 'Producto actualizado' });
  });
@@ -34,8 +32,7 @@ category = ?, stock = ? WHERE id = ?';
 // Eliminar producto
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
-    db.query('DELETE FROM products WHERE id = ?', [id], (err)
-   => {
+    db.query('DELETE FROM products WHERE id = ?', [id], (err) => {
     if (err) return res.status(500).send(err);
     res.send({ message: 'Producto eliminado' });
     });
