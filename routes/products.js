@@ -1,44 +1,59 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
+const productModel = require('../models/productModel');
 
-// Crear producto
-router.post('/', (req, res) => {
- const { name, price, category, stock } = req.body;
- const query = 'INSERT INTO products (name, price, category,stock) VALUES (?, ?, ?, ?)';
- db.query(query, [name, price, category, stock], (err, result) =>
-{
-    if (err) return res.status(500).send(err);
-    res.status(201).send({ message: 'Producto creado',  productId: result.insertId });
- });
+// Post producto
+router.post('/', async (req, res) => {
+  const { name, price, category, stock } = req.body;
+  try {
+    const productId = await productModel.createProduct(name, price, category, stock);
+    res.status(201).send({ message: 'Producto creado', productId });
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
-// Listar productos
-router.get('/', (req, res) => {
- db.query('SELECT * FROM products', (err, results) => {
-    if (err) return res.status(500).send(err);
-    res.send(results);
- });
+// Get all productos
+router.get('/', async (req, res) => {
+  try {
+    const products = await productModel.getProducts();
+    res.send(products);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
-// Actualizar producto
-router.put('/:id', (req, res) => {
- const { id } = req.params;
- const { name, price, category, stock } = req.body;
- 
- const query = 'UPDATE products SET name = ?, price = ?,category = ?, stock = ? WHERE id = ?';
- db.query(query, [name, price, category, stock, id], (err) => {
-    if (err) return res.status(500).send(err);
+router.get('/:id', async (req, res) => {
+   try {
+      const { id } = req.params;
+     const product = await productModel.getOneProducts(id);
+     res.send(product);
+   } catch (err) {
+     res.status(500).send(err);
+   }
+ });
+
+// Update producto
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, price, category, stock } = req.body;
+  try {
+    await productModel.updateProduct(id, name, price, category, stock);
     res.send({ message: 'Producto actualizado' });
- });
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
-// Eliminar producto
-router.delete('/:id', (req, res) => {
-    const { id } = req.params;
-    db.query('DELETE FROM products WHERE id = ?', [id], (err)  => {
-    if (err) return res.status(500).send(err);
+
+// Delete producto
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await productModel.deleteProduct(id);
     res.send({ message: 'Producto eliminado' });
-  });
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 module.exports = router;
