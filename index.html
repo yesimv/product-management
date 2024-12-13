@@ -52,6 +52,37 @@
                         <input class="btn boton-s  textbox" type="submit" value="Registrar">
                     </div>
                 </form>
+                <script>
+                    var form = document.getElementById("registerForm");
+
+                    form.addEventListener('submit',async e => {
+                        await e.preventDefault();
+
+                        const bodyJSON = {name : document.getElementById("name").value,
+                        price : Number(document.getElementById("precio_venta").value),
+                        category : document.getElementById("categoria").value,
+                        stock : Number(document.getElementById("stock").value)
+                        };                        
+                        
+                        const requestBody = await JSON.stringify(bodyJSON);
+
+                        await fetch('../api/products', {
+                            method: 'POST',
+                            headers: {
+                                'Content-type': 'application/json'
+                            },
+                            body: requestBody
+                        }).then(response => {
+                            return response.text();
+                        }).then(text => {
+                            console.log(text);
+                        }).catch(error => {
+                            console.error(error);
+                        });
+
+                        await location.reload();
+                    });
+                </script>
             </div>
 
             <div class="col cuadro-oscuro shadow rounded">
