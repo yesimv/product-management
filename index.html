@@ -55,7 +55,7 @@
                 <script>
                     var form = document.getElementById("registerForm");
 
-                    form.addEventListener('submit',async e => {
+                    form.addEventListener('submit',async (e) => {
                         await e.preventDefault();
 
                         const bodyJSON = {name : document.getElementById("name").value,
@@ -118,15 +118,74 @@
                                         <td>${product.stock}</td>
                                         <td>${product.price}</td>
                                         <td>
-                                            <input type="button" value="Modificar">
-                                            <input type="button" value="Eliminar">
+                                            <input type="button" value="Modificar" onclick="modifyProduct(this.parentElement.parentElement)">
+                                            <input type="button" value="Eliminar" onClick="deleteProduct(this.parentElement.parentElement)">
                                         </td>
                                     </tr>`;
                                     document.getElementById("productTable").insertAdjacentHTML('beforeend', tableData);
                                 });
                             })
                             .catch(error => console.log(error));
+                            
+                            async function modifyProduct(element) {
+                                let tableLine = element.children;
+                                element.innerHTML = `
+                                    <td>${tableLine[0].innerText}</td>
+                                    <form id="form_${tableLine[0].innerText}"></form>
+                                        <td><input type="text" name="modName" id="modifyName${tableLine[0].innerText}" value=${tableLine[1].innerText} form="form_${tableLine[0].innerText}" required></td>
+                                        <td><input type="text" name="modCategory" id="modifyCategory${tableLine[0].innerText}" value=${tableLine[2].innerText} form="form_${tableLine[0].innerText}" required></td>
+                                        <td><input type="number" name="modStock" id="modifyStock${tableLine[0].innerText}" value=${tableLine[3].innerText} min="0" step="1" form="form_${tableLine[0].innerText}" required></td>
+                                        <td><input type="number" name="modPrice" id="modifyPrice${tableLine[0].innerText}" value=${tableLine[4].innerText} min="0.00" step="0.01" form="form_${tableLine[0].innerText}" required></td>
+                                        <td>
+                                            <input type="submit" value="Confirmar" form="form_${tableLine[0].innerText}">
+                                        </td>`;
+                                let formulario = document.getElementById(`form_${tableLine[0].innerText}`);
+                                formulario.addEventListener('submit',async e => {
+                                    e.preventDefault();
+
+                                    const bodyJSON = {name : document.getElementById(`modifyName${tableLine[0].innerText}`).value,
+                                    price : Number(document.getElementById(`modifyPrice${tableLine[0].innerText}`).value),
+                                    category : document.getElementById(`modifyCategory${tableLine[0].innerText}`).value,
+                                    stock : Number(document.getElementById(`modifyStock${tableLine[0].innerText}`).value)
+                                    };
+                                    
+                                    const requestBody = await JSON.stringify(bodyJSON);
+                                    
+                                    await fetch(`../api/products/${tableLine[0].innerText}`, {
+                                        method: 'PUT',
+                                        headers: {
+                                            'Content-type': 'application/json'
+                                        },
+                                        body: requestBody
+                                    }).then(response => {
+                                        return response.text();
+                                    }).then(text => {
+                                        console.log(text);
+                                    }).catch(error => {
+                                        console.error(error);
+                                    });
+
+                                    await location.reload(); 
+                                });
+                            }
+
+                            async function deleteProduct(element) {
+                                let tableLine = element.children;
+
+                                await fetch(`../api/products/${tableLine[0].innerText}`, {
+                                        method: 'DELETE'
+                                    }).then(response => {
+                                        return response.text();
+                                    }).then(text => {
+                                        console.log(text);
+                                    }).catch(error => {
+                                        console.error(error);
+                                    });
+
+                                location.reload();
+                            }
                         </script>
+                        
                 </table>
             </div>
         </div>
