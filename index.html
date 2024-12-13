@@ -21,9 +21,9 @@
                 </div>
                 <div class="d-flex justify-content-evenly" style="margin: 20px 0;">
                     <form id="searchForm">
-                        <input class="form-control custom-input textbox" type="text" name="buscar" placeholder="Buscar por ID o Nombre del Producto" style="padding: 5px; width: 300px;">
+                        <input id="buscar"  class="form-control custom-input textbox" type="text" name="buscar" placeholder="Buscar por ID o Nombre del Producto" style="padding: 5px; width: 300px;" onkeyup="buscarProducto()">
                         
-                        <input class="btn boton-s  textbox" type="submit" value="Buscar">
+                        <input  class="btn boton-s  textbox" type="submit" value="Buscar">
                     </form>
                 </div>
 
@@ -89,7 +89,7 @@
                 <div style="text-align: center;padding-top: 15px;">
                     <u><p>INVENTARIO</p></u>
                 </div>
-                <table class="table table-dark table-striped text-center">
+                <table id="Productos" class="table table-dark table-striped text-center">
                     <thead>
                         <tr>
                             <th>ID Producto</th>
@@ -126,6 +126,8 @@
                                 });
                             })
                             .catch(error => console.log(error));
+                            
+
                             
                             async function modifyProduct(element) {
                                 let tableLine = element.children;
@@ -190,6 +192,38 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function buscarProducto() {
+            var input = document.getElementById("buscar");
+            var filtro = input.value.toLowerCase();
+            var tablin = document.getElementById("Productos");
+            var tr = tablin.getElementsByTagName("tr");
+    
+            for (let i = 1; i < tr.length; i++) {
+                var tdId = tr[i].getElementsByTagName("td")[0];
+                var tdNombre = tr[i].getElementsByTagName("td")[1];
+    
+                if (tdId && tdNombre) {
+                    var textoNombre = tdNombre.textContent || tdNombre.innerText;
+                    var textoId = tdId.textContent || tdId.innerText;
+    
+                    if (textoId.toLowerCase().indexOf(filtro) > -1 ||textoNombre.toLocaleLowerCase().indexOf(filtro)> -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                        
+                    }
+    
+                }
+                
+            }
+    
+    
+        }
+        </script>
+
+
 
     <div id="modal" class="modal" style="display: none;">
         <div class="modal-content">
