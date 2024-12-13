@@ -132,10 +132,10 @@
                                 element.innerHTML = `
                                     <td>${tableLine[0].innerText}</td>
                                     <form id="form_${tableLine[0].innerText}"></form>
-                                        <td><input type="text" name="modName" id="modifyName${tableLine[0].innerText}" value=${tableLine[1].innerText} form="form_${tableLine[0].innerText}" required></td>
-                                        <td><input type="text" name="modCategory" id="modifyCategory${tableLine[0].innerText}" value=${tableLine[2].innerText} form="form_${tableLine[0].innerText}" required></td>
-                                        <td><input type="number" name="modStock" id="modifyStock${tableLine[0].innerText}" value=${tableLine[3].innerText} min="0" step="1" form="form_${tableLine[0].innerText}" required></td>
-                                        <td><input type="number" name="modPrice" id="modifyPrice${tableLine[0].innerText}" value=${tableLine[4].innerText} min="0.00" step="0.01" form="form_${tableLine[0].innerText}" required></td>
+                                        <td><input type="text" name="modName" id="modifyName${tableLine[0].innerText}" value=${tableLine[1].innerText} form="form_${tableLine[0].innerText}" size="15" required></td>
+                                        <td><input type="text" name="modCategory" id="modifyCategory${tableLine[0].innerText}" value=${tableLine[2].innerText} form="form_${tableLine[0].innerText}" size="10" required></td>
+                                        <td><input type="number" name="modStock" id="modifyStock${tableLine[0].innerText}" value=${tableLine[3].innerText} min="0" step="1" form="form_${tableLine[0].innerText}" size="5" required></td>
+                                        <td><input type="number" name="modPrice" id="modifyPrice${tableLine[0].innerText}" value=${tableLine[4].innerText} min="0.00" step="0.01" form="form_${tableLine[0].innerText}" size="7" required></td>
                                         <td>
                                             <input type="submit" value="Confirmar" form="form_${tableLine[0].innerText}">
                                         </td>`;
