@@ -20,8 +20,8 @@ async function listProducts() {
                 <td>${product.category}</td>
                 <td>${product.stock}</td>
                 <td>
-                    <button class="btn btn-outline-warning btn-sm" onclick="modifyProduct(${product.id})">Modificar</button>
-                    <button class="btn btn-outline-danger btn-sm" onclick="deleteProduct(${product.id})">Eliminar</button>
+                    <button class="btn btn-warning btn-sm" onclick="modifyProduct(${product.id})">Modificar</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteProduct(${product.id})">Eliminar</button>
                 </td>`;
             tableBody.appendChild(row);
         });
