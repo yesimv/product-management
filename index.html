@@ -4,133 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
-    <link rel="icon" href="../images/icono-logo.png">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/?size=100&id=112575&format=png&color=000000">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
     
-
-    <div class="container text-center py-4">
-        <div class="row row-cols-auto justify-content-evenly">
-            <div class="col cuadro-oscuro shadow rounded my-4">
-                <div style="text-align: center;padding-top: 15px;">
-                    <u><p>BUSCAR</p></u>
-                </div>
-                <div class="d-flex justify-content-evenly" style="margin: 20px 0;">
-                    <form id="searchForm">
-                        <input class="form-control custom-input textbox" type="text" name="buscar" placeholder="Buscar por ID o Nombre del Producto" style="padding: 5px; width: 300px;">
-                        
-                        <input class="btn boton-s  textbox" type="submit" value="Buscar">
-                    </form>
-                </div>
-
-                <div style="text-align: center;">
-                    <u><p>REGISTRAR PRODUCTO</p></u>
-                </div>
-                <form id="registerForm">
-                    <div class="login">
-                        <div class="textbox d-flex align-items-center">
-                            <i class="fas fa-clipboard"></i>
-                            <input type="text" class="form-control custom-input" placeholder="Nombre del producto" id="name" name="name" autocomplete="off" required>
-                        </div>
-                        <div class="textbox d-flex align-items-center">
-                            <i class="fas fa-tags"></i>
-                            <input type="text" class="form-control custom-input" placeholder="Categoría" id="categoria" name="categoria" autocomplete="off" required>
-                        </div>
-                        <div class="textbox d-flex align-items-center">
-                            <i class="fas fa-clipboard"></i>
-                            <input type="number" class="form-control custom-input" placeholder="Cantidad en stock" id="stock" name="stock" min="0" step="1" autocomplete="off" required>
-                        </div>
-                        <div class="textbox d-flex align-items-center">
-                            <i class="fas fa-dollar-sign"></i>
-                            <input type="number" class="form-control custom-input" placeholder="Precio de venta unitario" id="precio_venta" name="precio_venta" min="0.00" step="0.10" autocomplete="off" required>
-                        </div>
-                        
-                        <input class="btn boton-s  textbox" type="submit" value="Registrar">
+</head>
+<body class="bg-light">
+    <div class="container text-center py-5  d-flex flex-column ">
+        <div class="row row-cols-auto justify-content-evenly py-5">
+            <!-- Buscar Productos -->
+            <div class="col cuadro-oscuro shadow rounded my-4 p-4  bg-white" style="height: fit-content;">
+                <h4>BUSCAR</h4>
+                <form id="searchForm" class="mb-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Buscar por ID o Nombre del Producto">
+                        <button type="submit" class="btn btn-outline-primary">Buscar</button>
                     </div>
                 </form>
+                <h4>REGISTRAR</h4>
+                <form id="createProduct">
+                    <div class="textbox d-flex align-items-center justify-content-between">
+                    <i class="fas fa-clipboard px-2"></i>
+                    <input type="text" class="form-control mb-2 w-75" id="name" placeholder="Nombre del Producto" required>
+                </div>
+                    <div class="textbox d-flex align-items-center justify-content-between">
+                    <i class="fas fa-dollar-sign fas fa-dollar-sign px-2"></i>
+                    <input type="number" class="form-control mb-2 w-75" id="price" placeholder="Precio" step="0.01" required>
+                </div>
+                    <div class="textbox d-flex align-items-center justify-content-between">
+                    <i class="fas fa-tags px-2"></i>
+                    <input type="text" class="form-control mb-2 w-75" id="category" placeholder="Categoría" required>
+                </div>
+
+                    <div class="textbox d-flex align-items-center justify-content-between">
+                    <i class="fas fa-clipboard px-2"></i>
+                    <input type="number" class="form-control mb-2 w-75" id="stock" placeholder="Cantidad en Stock" required>
+                </div>
+                    
+                    <button type="submit " class="btn btn-outline-success ">Registrar</button>
+                </form>
+
             </div>
 
-            <div class="col cuadro-oscuro shadow rounded">
-                <div style="text-align: center;padding-top: 15px;">
-                    <u><p>INVENTARIO</p></u>
-                </div>
-                <table class="table table-dark table-striped text-center">
-                    <thead>
+            <!-- Inventario -->
+            <div class="col cuadro-oscuro shadow rounded p-4 bg-white">
+                <h4>INVENTARIO</h4>
+                <table id="productTable" class="table text-center " >
+                    <thead >
                         <tr>
                             <th>ID Producto</th>
-                            <th>Nombre del Producto</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
                             <th>Categoría</th>
                             <th>Stock</th>
-                            <th>Precio de venta</th>
-                            
-                            <th>Acción</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="productTable">
-                    </tbody>
-                    <script>
-                            fetch('../api/products')
-                            .then(response => {
-                                return response.json();
-                            })
-                            .then(data => {
-                                data.forEach(product => {
-                                    let tableData = `
-                                    <tr>
-                                        <td>${product.id}</td>
-                                        <td>${product.name}</td>
-                                        <td>${product.category}</td>
-                                        <td>${product.stock}</td>
-                                        <td>${product.price}</td>
-                                        <td>
-                                            <input type="button" value="Modificar">
-                                            <input type="button" value="Eliminar">
-                                        </td>
-                                    </tr>`;
-                                    document.getElementById("productTable").insertAdjacentHTML('beforeend', tableData);
-                                });
-                            })
-                            .catch(error => console.log(error));
-                        </script>
+
+                    <tbody id="productTableBody"></tbody>
+
                 </table>
             </div>
         </div>
     </div>
-
-    <div id="modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>MODIFICAR PRODUCTO</h2>
-            <form id="modifyForm">
-                <input type="hidden" id="modal-id" name="idp">
-                <div class="textbox d-flex align-items-center">
-                    <i class="fas fa-clipboard"></i>
-                    <input type="text" class="form-control custom-input" placeholder="Nombre del producto" id="modal-name" name="name" required>
-                </div>
-                <div class="textbox d-flex align-items-center">
-                    <i class="fas fa-tags"></i>
-                    <input type="text" class="form-control custom-input" placeholder="Categoría" id="modal-category" name="category" required>
-                </div>
-                <div class="textbox d-flex align-items-center">
-                    <i class="fas fa-clipboard"></i>
-                    <input type="number" class="form-control custom-input" placeholder="Stock" id="modal-stock" name="stock" required>
-                </div>
-                <div class="textbox d-flex align-items-center">
-                    <i class="fas fa-dollar-sign"></i>
-                    <input type="number" class="form-control custom-input" placeholder="Precio" id="modal-price" name="price" required>
-                </div>
-                
-                <input class="btn boton-s " type="submit" value="Modificar">
-            </form>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="app.js"></script>
-    <script src="script.js"></script>
 </body>
 </html>
