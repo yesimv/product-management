@@ -20,26 +20,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${product.categoty}</td>
                 <td>${product.stock}</td>
                 <td>$${product.price.toFixed(2)}</td>
-                <td><button class="btn btn-primary btn-sm" onclick="openModifyModal(${product.id})">Modificar</button></td>
+                <td><button class="btn btn-outline-primary btn-sm" onclick="openModifyModal(${product.id})">Modificar</button></td>
             `;
             productTable.appendChild(row);
         });
     }
 
     // Add Event Listeners for Forms
-    document.getElementById("searchForm").addEventListener("submit", (e) => {
+   /*  document.getElementById("searchForm").addEventListener("submit", (e) => {
         e.preventDefault();
         alert("Buscar función aún no implementada.");
-    });
+    }); */
 
-    document.getElementById("registerForm").addEventListener("submit", (e) => {
+
+    
+
+    document.getElementById("createProduct").addEventListener("submit", (e) => {
         e.preventDefault();
-        const nombre = document.getElementById("nombre_producto").value;
+        const name = document.getElementById("name").value;
         const category = parseInt(document.getElementById("category").value);
         const stock = parseInt(document.getElementById("stock").value);
-        const precio = parseFloat(document.getElementById("precio_venta").value);
+        const price = parseFloat(document.getElementById("price").value);
 
-        products.push({ id: products.length + 1, name: nombre, category: categoria, stock, price: precio });
+        products.push({ id: products.length + 1, name: name, category: category, stock, price: price });
         refreshProductTable();
         alert("Producto registrado exitosamente.");
     });

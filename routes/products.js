@@ -1,59 +1,66 @@
 const express = require('express');
 const router = express.Router();
-const productModel = require('../models/productModel');
+const { getProducts, createProduct, getOneProducts, updateProduct, deleteProduct } = require('../controllers/productController');
 
-// Post producto
-router.post('/', async (req, res) => {
-  const { name, price, category, stock } = req.body;
-  try {
-    const productId = await productModel.createProduct(name, price, category, stock);
-    res.status(201).send({ message: 'Producto creado', productId });
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
-
-// Get all productos
+// Obtener todos los productos o filtrar por búsqueda
 router.get('/', async (req, res) => {
   try {
-    const products = await productModel.getProducts();
-    res.send(products);
-  } catch (err) {
-    res.status(500).send(err);
-  }
+    const { search } = req.query;
+
+    if (search) {
+        // Si hay un término de búsqueda, realiza la consulta
+        const products = await getProducts(search);
+        res.json(products);
+    } else {
+        // Si no hay búsqueda, devuelve todos los productos
+        const products = await getProducts();
+        res.json(products);
+    }} catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
+// Obtener un producto por ID
 router.get('/:id', async (req, res) => {
-   try {
-      const { id } = req.params;
-     const product = await productModel.getOneProducts(id);
-     res.send(product);
-   } catch (err) {
-     res.status(500).send(err);
-   }
- });
-
-// Update producto
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const { name, price, category, stock } = req.body;
-  try {
-    await productModel.updateProduct(id, name, price, category, stock);
-    res.send({ message: 'Producto actualizado' });
-  } catch (err) {
-    res.status(500).send(err);
-  }
+    try {
+        const product = await getOneProducts(req.params.id);
+        res.json(product);
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
 });
 
-// Delete producto
+// Crear un nuevo producto
+router.post('/', async (req, res) => {
+    try {
+        const { name, price, category, stock } = req.body;
+        const id = await createProduct(name, price, category, stock);
+        res.status(201).json({ id });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Actualizar un producto
+router.put('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, price, category, stock } = req.body;
+        await updateProduct(id, name, price, category, stock);
+        res.status(200).json({ message: 'Producto actualizado' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Eliminar un producto
 router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    await productModel.deleteProduct(id);
-    res.send({ message: 'Producto eliminado' });
-  } catch (err) {
-    res.status(500).send(err);
-  }
+    try {
+        await deleteProduct(req.params.id);
+        res.status(200).json({ message: 'Producto eliminado' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 module.exports = router;
